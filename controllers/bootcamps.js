@@ -1,45 +1,44 @@
-
-/* 
+/*
     @desc       Get all bootcamps
     @route      GET /api/v1/bootcamps
     @access     Public
 */
-export.getBootcamps = (req, res, next) => {
-    res.status(200).json({ success: true, msg: 'show all bootcamps' });
+exports.getBootcamps = (req, res, next) => {
+    res.status(200).json({success: true, msg: 'Show all bootcamps'});
 };
 
 /* 
-    @desc       Get all bootcamps
-    @route      GET /api/v1/bootcamps
+    @desc       Get single bootcamp
+    @route      GET /api/v1/bootcamps/:id
     @access     Public
 */
-export.getBootcamp = (req, res, next) => {
-    res.status(200).json({ success: true, msg: 'show bootcamp' });
+exports.getBootcamp = (req, res, next) => {
+    res.status(200).json({success: true, msg: `Show bootcamp ${req.params.id}`});
 };
 
 /* 
-    @desc       Get all bootcamps
-    @route      GET /api/v1/bootcamps
+    @desc       create bootcamps
+    @route      POST /api/v1/bootcamps
     @access     Public
 */
-export.createBootcamp = (req, res, next) => {
-    res.status(200).json({ success: true, msg: 'create bootcamp' });
+exports.createBootcamp = (req, res, next) => {
+    res.status(200).json({success: true, msg: 'create bootcamp'});
 };
 
 /* 
-    @desc       Get all bootcamps
-    @route      GET /api/v1/bootcamps
+    @desc       Update bootcamps
+    @route      PUT /api/v1/bootcamps/:id
     @access     Public
 */
-export.updateBootcamp = (req, res, next) => {
-    res.status(200).json({ success: true, msg: 'update bootcamp' });
+exports.updateBootcamp = (req, res, next) => {
+    res.status(200).json({success: true, msg: `update bootcamp ${req.params.id}`});
 };
 
 /* 
-    @desc       Get all bootcamps
-    @route      GET /api/v1/bootcamps
+    @desc       Delete bootcamps
+    @route      DELETE /api/v1/bootcamps/:id
     @access     Public
 */
-export.deleteBootcamp = (req, res, next) => {
-    res.status(200).json({ success: true, msg: 'delete bootcamp' });
+exports.deleteBootcamp = (req, res, next) => {
+    res.status(200).json({success: true, msg: `delete bootcamp ${req.params.id}`});
 };
