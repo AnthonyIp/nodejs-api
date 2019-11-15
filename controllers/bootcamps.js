@@ -1,8 +1,7 @@
-const Bootcamp = require('../models/Bootcamp');
-const asyncHandler = require('../middleware/async');
+const Bootcamp      = require('../models/Bootcamp');
+const asyncHandler  = require('../middleware/async');
 const ErrorResponse = require('../utils/errorResponse');
-const geocoder = require('../utils/geocoder');
-
+const geocoder      = require('../utils/geocoder');
 
 /*
     @desc       Get all bootcamps
@@ -22,7 +21,7 @@ exports.getBootcamps = asyncHandler(async (req, res, next) => {
     // Create operators ($gt, $gte, $lte, $lt, $in)
     queryStr            = queryStr.replace(/\b(gt|gte|lt|lte|in)\b/g, match => `$${match}`);
     // Finding ressource
-    query               = Bootcamp.find(JSON.parse(queryStr));
+    query               = Bootcamp.find(JSON.parse(queryStr)).populate('courses');
     // Select Fields
     if (req.query.select) {
         const fields    = req.query.select.split('/').join(' ');
@@ -42,7 +41,7 @@ exports.getBootcamps = asyncHandler(async (req, res, next) => {
     const startIndex    = ( page - 1 ) * limit;
     const endIndex      = page * limit;
     const total         = await Bootcamp.countDocuments();
-    query               =  query.skip(startIndex).limit(limit);
+    query               = query.skip(startIndex).limit(limit);
 
     // Executing query
     const bootcamp  = await query;
@@ -115,10 +114,11 @@ exports.updateBootcamp = asyncHandler(async (req, res, next) => {
     @access     Public
 */
 exports.deleteBootcamp = asyncHandler(async (req, res, next) => {
-    const bootcamp = await Bootcamp.findByIdAndDelete(req.params.id);
+    const bootcamp = await Bootcamp.findById(req.params.id);
     if (!bootcamp) {
         return next(new ErrorResponse(`Bootcamp not found with the id of ${req.params.id}`, 404));
     }
+    bootcamp.remove();
     res.status(200).json({success: true, data: {}});
 });
 
