@@ -1,5 +1,5 @@
-const express   = require('express');
-const router    = express.Router({mergeParams: true });
+const express       = require('express');
+const router        = express.Router({mergeParams: true });
 const {
     getCourses,
     getCourse,
@@ -7,9 +7,12 @@ const {
     updateCourse,
     deleteCourse
 } = require('../controllers/courses');
+const {
+    protect,
+    authorize
+}       = require('../middleware/auth');
 
-const Course          = require('../models/Course');
-
+const Course            = require('../models/Course');
 const advancedResults   = require('../middleware/advancedResults');
 
 router.route('/')
@@ -17,11 +20,11 @@ router.route('/')
         path    : 'bootcamp',
         select  : 'name description'
     }), getCourses)
-    .post(addCourse);
+    .post(protect, authorize('publisher', 'admin'), addCourse);
 
 router.route('/:id')
     .get(getCourse)
-    .put(updateCourse)
-    .delete(deleteCourse);
+    .put(protect, authorize('publisher', 'admin'), updateCourse)
+    .delete(protect, authorize('publisher', 'admin'), deleteCourse);
 
 module.exports = router;
