@@ -7,13 +7,12 @@ const {
     updateCourse,
     deleteCourse
 } = require('../controllers/courses');
-const {
-    protect,
-    authorize
-}       = require('../middleware/auth');
 
 const Course            = require('../models/Course');
-const advancedResults   = require('../middleware/advancedResults');
+
+/*Middleware*/
+const { protect, authorize }    = require('../middleware/auth');
+const advancedResults           = require('../middleware/advancedResults');
 
 router.route('/')
     .get(advancedResults(Course, {
