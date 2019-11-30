@@ -1,5 +1,5 @@
-const express       = require('express');
-const router        = express.Router({mergeParams: true });
+const express   = require('express');
+const router    = express.Router({mergeParams: true });
 const {
     getCourses,
     getCourse,
@@ -8,7 +8,7 @@ const {
     deleteCourse
 } = require('../controllers/courses');
 
-const Course            = require('../models/Course');
+const Course    = require('../models/Course');
 
 /*Middleware*/
 const { protect, authorize }    = require('../middleware/auth');

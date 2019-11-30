@@ -1,6 +1,6 @@
 const crypto        = require('crypto');
-const asyncHandler  = require('../middleware/async');
 const ErrorResponse = require('../utils/errorResponse');
+const asyncHandler  = require('../middleware/async');
 const sendEmail     = require('../utils/sendEmail');
 const User          = require('../models/User');
 
@@ -70,7 +70,7 @@ exports.getMe = asyncHandler(async (req, res, next) =>{
 /*
     @desc       Forgot password
     @route      POST /api/v1/auth/forgotpassword
-    @access     public
+    @access     Public
 */
 exports.forgotPassword = asyncHandler(async (req, res, next) =>{
     const user = await User.findOne({email: req.body.email});
@@ -105,21 +105,19 @@ exports.forgotPassword = asyncHandler(async (req, res, next) =>{
 
         return next(new ErrorResponse(`Email could not be sent`, 500));
     }
-    //
-    // res.status(200).json({
-    //     success : true,
-    //     data    : user
-    // })
 });
 
 /*
     @desc       Reset Password
     @route      PUT /api/v1/auth/resetpassword/:resettoken
-    @access     Private
+    @access     Public
 */
 exports.resetPassword = asyncHandler(async (req, res, next) =>{
     // Get hashed token
-    const resetPasswordToken = crypto.createHash('sha256').update(req.params.resettoken).digest('hex');
+    const resetPasswordToken = crypto
+        .createHash('sha256')
+        .update(req.params.resettoken)
+        .digest('hex');
 
     const user = await User.findOne({
         resetPasswordToken,
@@ -177,6 +175,23 @@ exports.updatePassword = asyncHandler(async (req, res, next) =>{
     user.save();
 
     sendTokenResponse(user, 200, res);
+});
+
+/*
+    @desc       Log user out / clear cookie
+    @route      GET /api/v1/auth/logout
+    @access     Private
+*/
+exports.logout = asyncHandler(async (req, res, next) =>{
+    res.cookie('token', 'none', {
+        expires: new Date(Date.now() + 10 * 1000),
+        httpOnly: true,
+    });
+
+    res.status(200).json({
+        success : true,
+        data    : {}
+    })
 });
 
 //  Get token from model, create cookie and send response

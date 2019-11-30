@@ -35,7 +35,7 @@ exports.getCourse = asyncHandler(async (req, res, next) => {
     });
 
     if (!course) {
-        return next(new ErrorResponse(`No course with the id of ${req.params.id}`), 404)
+        return next(new ErrorResponse(`No course with the id of ${req.params.id}`, 404))
     }
 
     res.status(200).json({
